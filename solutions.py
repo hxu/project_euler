@@ -2,6 +2,7 @@
 from __future__ import division
 import cProfile
 import math
+import collections
 
 
 def counter(limit):
@@ -47,6 +48,25 @@ def is_prime(num):
         if num % x == 0:
             return False
     return True
+
+
+def is_palindromic(num):
+    """
+    Checks if a number reads both the same both ways
+    """
+    if isinstance(num, collections.deque):
+        remaining = num
+    else:
+        remaining = collections.deque(str(num))
+    if len(remaining) in [0, 1]:
+        return True
+    else:
+        left = remaining.popleft()
+        right = remaining.pop()
+        if left == right:
+            return is_palindromic(remaining)
+        else:
+            return False
 
 
 class Solution(object):
@@ -104,4 +124,4 @@ class Solution3(Solution):
         print(primes)
         return primes
 
-Solution3().run(limit=600851475143)
+#Solution3().run(limit=600851475143)
