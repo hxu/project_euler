@@ -1,21 +1,52 @@
 # Project Euler solution implementations
+from __future__ import division
 import cProfile
 import math
 
 
+def counter(limit):
+    x = 1
+    while x < limit:
+        yield x
+        x += 1
+
+
+def multiplier(limit, by):
+    x = 1
+    y = x * by
+    while y < limit:
+        yield x
+        y += by
+
+
+def sieve(limit):
+    return sieve_of_eratosthenes(limit)
+
+
 def sieve_of_eratosthenes(limit):
     # Uses Sieve of Eratosthenes to get a list of primes up to limit
-    nums = set(range(2, int(round(limit, 0)) + 1))
-    primes = []
-    while nums:
-        p = nums.pop()
-        primes.append(p)
-        print("Primes: {}".format(primes))
-        remove = set([x for x in nums if x % p == 0])
-        nums = nums.difference(remove)
-
-    primes.sort()
+    # Pretty slow for larger limits, seems like the union is the problem?
+    nums = range(2, limit)
+    excluded = set([1])
+    primes = [1]
+    for x in nums:
+        if x in excluded:
+            print("skipping {}".format(x))
+            continue
+        primes.append(x)
+        print("primes {} added".format(x))
+        excluded = excluded.union(set(range(x, limit, x)))
     return primes
+
+
+def is_prime(num):
+    """
+    Check if a number is prime
+    """
+    for x in range(2, int(math.ceil(math.sqrt(num))) + 1):
+        if num % x == 0:
+            return False
+    return True
 
 
 class Solution(object):
@@ -62,13 +93,15 @@ class Solution2(Solution):
 
 
 class Solution3(Solution):
-    def get_prime_factors(self, num):
-        # gets the prime factors for a numbers
-        primes = sieve_of_eratosthenes(math.sqrt(num))
-        res = [x for x in primes if num % x == 0]
-        return res
-
     def solve(self, **kwargs):
-        self.answer = max(self.get_prime_factors(600851475143))
+        limit = kwargs['limit']
+        primes = []
+        for x in range(2, int(math.ceil(math.sqrt(limit)))):
+            if is_prime(x):
+                if limit % x == 0:
+                    primes.append(x)
+                    self.answer = x
+        print(primes)
+        return primes
 
-Solution3().run()
+Solution3().run(limit=600851475143)
