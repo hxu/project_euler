@@ -162,4 +162,18 @@ class Solution5(Solution):
     def solve(self, **kwargs):
         self.answer = lcm(*range(1, 21))
 
-Solution5().run()
+#Solution5().run()
+
+
+class Solution6(Solution):
+    def sum_of_squares(self, *nums):
+        return sum([x ** 2 for x in nums])
+
+    def square_of_sum(self, *nums):
+        return sum(nums) ** 2
+
+    def solve(self, **kwargs):
+        nums = range(1, 101)
+        self.answer = self.square_of_sum(*nums) - self.sum_of_squares(*nums)
+
+Solution6().run()
