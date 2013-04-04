@@ -69,6 +69,13 @@ def is_palindromic(num):
             return False
 
 
+def gcd(num1, num2):
+    """
+    Euclid's algorithm to calculate the greatest common divisor of two numbers
+    """
+    pass
+
+
 class Solution(object):
     def run(self, **kwargs):
         print("Running {}".format(self.__class__.__name__))
@@ -125,3 +132,26 @@ class Solution3(Solution):
         return primes
 
 #Solution3().run(limit=600851475143)
+
+
+class Solution4(Solution):
+    def solve(self, **kwargs):
+        three_digit = range(900, 1000)
+        nums = set()
+        for x in three_digit:
+            for y in three_digit:
+                nums.add(x * y)
+        ans = 0
+        for x in nums:
+            if is_palindromic(x) and x > ans:
+                ans = x
+        self.answer = ans
+
+#Solution4().run()
+
+
+class Solution5(Solution):
+    def solve(self, **kwargs):
+        pass
+
+Solution5().run()
