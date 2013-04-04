@@ -5,21 +5,6 @@ import math
 import collections
 
 
-def counter(limit):
-    x = 1
-    while x < limit:
-        yield x
-        x += 1
-
-
-def multiplier(limit, by):
-    x = 1
-    y = x * by
-    while y < limit:
-        yield x
-        y += by
-
-
 def sieve(limit):
     return sieve_of_eratosthenes(limit)
 
@@ -27,17 +12,46 @@ def sieve(limit):
 def sieve_of_eratosthenes(limit):
     # Uses Sieve of Eratosthenes to get a list of primes up to limit
     # Pretty slow for larger limits, seems like the union is the problem?
-    nums = range(2, limit)
-    excluded = set([1])
-    primes = [1]
+    nums = range(2, limit + 1)
+    excluded = []
+    primes = []
     for x in nums:
-        if x in excluded:
-            print("skipping {}".format(x))
-            continue
-        primes.append(x)
-        print("primes {} added".format(x))
-        excluded = excluded.union(set(range(x, limit, x)))
+        prime = True
+        for y in excluded:
+            if x % y == 0:
+                print("skipping {}".format(x))
+                prime = False
+                break
+        if prime is True:
+            print("primes {} added".format(x))
+            primes.append(x)
+        excluded.append(x)
     return primes
+
+
+def iterable_sieve():
+    """
+    Iterable version of the sieve
+    """
+    excluded = []
+    x = 2
+    while True:
+        prime = True
+        for y in excluded:
+            if x % y == 0:
+                prime = False
+                break
+        if prime is True:
+            yield x
+        excluded.append(x)
+        x += 1
+
+
+def nth_prime(n):
+    """
+    Returns the nth prime
+    """
+    pass
 
 
 def is_prime(num):
@@ -58,6 +72,7 @@ def is_palindromic(num):
         remaining = num
     else:
         remaining = collections.deque(str(num))
+
     if len(remaining) in [0, 1]:
         return True
     else:
@@ -176,4 +191,17 @@ class Solution6(Solution):
         nums = range(1, 101)
         self.answer = self.square_of_sum(*nums) - self.sum_of_squares(*nums)
 
-Solution6().run()
+#Solution6().run()
+
+
+class Solution7(Solution):
+    def solve(self, limit=10001, **kwargs):
+        primes = []
+        sieve = iterable_sieve()
+        i = 0
+        while i < limit:
+            primes.append(sieve.next())
+            i += 1
+        self.answer = primes.pop()
+
+Solution7().run()
