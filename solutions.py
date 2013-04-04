@@ -69,11 +69,19 @@ def is_palindromic(num):
             return False
 
 
-def gcd(num1, num2):
+def gcd(*numbers):
     """
-    Euclid's algorithm to calculate the greatest common divisor of two numbers
+    https://gist.github.com/endolith/114336
     """
-    pass
+    from fractions import gcd
+    return reduce(gcd, numbers)
+
+
+def lcm(*numbers):
+    """
+    Returns the least common multiple of two numbers
+    """
+    return reduce(lambda x, y: (x * y) / gcd(x, y), numbers, 1)
 
 
 class Solution(object):
@@ -152,6 +160,6 @@ class Solution4(Solution):
 
 class Solution5(Solution):
     def solve(self, **kwargs):
-        pass
+        self.answer = lcm(*range(1, 21))
 
 Solution5().run()
