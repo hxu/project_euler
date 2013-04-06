@@ -268,4 +268,17 @@ class Solution9(Solution):
             m += 1
 
 
-Solution9().run()
+#Solution9().run()
+
+class Solution10(Solution):
+    def solve(self):
+        sieve = iterable_sieve()
+        self.answer = 0
+        while True:
+            last_prime = sieve.next()
+            print(last_prime)
+            if last_prime > 2000000:
+                break
+            self.answer += last_prime
+
+#Solution10().run()
