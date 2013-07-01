@@ -17,21 +17,22 @@ def prod(iterable):
 def sieve_of_eratosthenes(limit):
     # Uses Sieve of Eratosthenes to get a list of primes up to limit
     # Pretty slow for larger limits, seems like the union is the problem?
-    nums = range(2, limit + 1)
-    excluded = []
-    primes = []
-    for x in nums:
-        prime = True
-        for y in excluded:
-            if x % y == 0:
-                print("skipping {}".format(x))
-                prime = False
-                break
-        if prime is True:
-            print("primes {} added".format(x))
-            primes.append(x)
-        excluded.append(x)
-    return primes
+
+    # from http://code.jasonbhill.com/python/project-euler-problem-7/
+    # apparently printing is really slow
+
+    # generate a list of Trues before starting the sieve
+    primes = [True] * limit
+
+    # 0 and 1 are not primes
+    primes[0], primes[1] = [None] * 2
+
+    for i, v in enumerate(primes):
+        if v is True:
+            # all multiples of that number are not prime
+            primes[i*2::i] = [False] * (((limit - 1) // i) - 1)
+
+    return [k for k, v in enumerate(primes) if v is True]
 
 
 def iterable_sieve():
@@ -69,9 +70,15 @@ def is_prime(num):
     """
     Check if a number is prime
     """
-    for x in range(2, int(math.ceil(math.sqrt(num))) + 1):
-        if num % x == 0:
+    if num % 2 == 0:
+        return False
+
+    fac = 3
+    while fac < num**0.5 + 1:
+        if num % fac == 0:
             return False
+        fac += 2
+
     return True
 
 
@@ -272,13 +279,7 @@ class Solution9(Solution):
 
 class Solution10(Solution):
     def solve(self):
-        sieve = iterable_sieve()
-        self.answer = 0
-        while True:
-            last_prime = sieve.next()
-            print(last_prime)
-            if last_prime > 2000000:
-                break
-            self.answer += last_prime
+        primes = sieve_of_eratosthenes(2000001)
+        self.answer = sum(primes)
 
-#Solution10().run()
+Solution10().run()
