@@ -322,4 +322,30 @@ class Solution11(Solution):
 
         self.answer = (max(maxes))
 
-Solution11().run()
+#Solution11().run()
+
+class Solution12(Solution):
+    def triangular_number(self, n):
+        return sum(range(1, n+1))
+
+    def factors(self, n):
+        # Returns list of factors of n
+        factors = [1, n]
+        x = 2
+        while x < ((n ** 0.5) + 1):
+            if n % x == 0:
+                factors.extend([x, n / x])
+            x += 1
+
+        return factors
+
+    def solve(self):
+        x = 1
+        factors = []
+        while len(factors) <= 500:
+            num = self.triangular_number(x)
+            factors = self.factors(num)
+            x += 1
+        self.answer = num
+
+Solution12().run()
