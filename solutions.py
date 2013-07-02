@@ -356,4 +356,32 @@ class Solution13(Solution):
         res = sum(nums)
         self.answer = str(res)[0:10]
 
-Solution13().run()
+#Solution13().run()
+
+class Solution14(Solution):
+
+    def solve(self):
+        collantz_cache = {}
+
+        max_length = 1
+        seed = 1
+        while seed < 1000000:
+            num = seed
+            count = 1
+            while num != 1:
+                if collantz_cache.get(num, None):
+                    count += collantz_cache[num]
+                    num = 1
+                elif num % 2 == 0:
+                    num = num / 2
+                else:
+                    num = (3 * num) + 1
+                count += 1
+            collantz_cache[seed] = count
+            if count > max_length:
+                print 'new length {} with seed {}'.format(count, seed)
+                max_length = count
+            seed += 1
+        self.answer = max_length
+
+Solution14().run()
