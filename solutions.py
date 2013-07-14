@@ -395,4 +395,16 @@ class Solution15(Solution):
         bottom = math.factorial(20)
         self.answer = long(top / bottom)
 
-Solution15().run()
+# Solution15().run()
+
+class Solution16(Solution):
+    def solve(self):
+        val = 2 ** 1000
+        digits = [int(x) for x in str(val)]
+        self.answer = sum(digits)
+
+# Solution16().run()
+
+class Solution17(Solution):
+    def solve(self):
+        self.answer = None
