@@ -384,4 +384,15 @@ class Solution14(Solution):
             seed += 1
         self.answer = max_length
 
-#Solution14().run()
+# Solution14().run()
+
+class Solution15(Solution):
+    def solve(self):
+        from operator import mul
+        import math
+        # have to go right 20 times, then down 20 times.  So should be 40! / 20!*20!
+        top = reduce(mul, range(21, 41), 1)
+        bottom = math.factorial(20)
+        self.answer = long(top / bottom)
+
+Solution15().run()
