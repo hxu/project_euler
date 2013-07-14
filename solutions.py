@@ -407,4 +407,85 @@ class Solution16(Solution):
 
 class Solution17(Solution):
     def solve(self):
-        self.answer = None
+
+        def number_to_word(num):
+            words = {
+                1: 'one',
+                2: 'two',
+                3: 'three',
+                4: 'four',
+                5: 'five',
+                6: 'six',
+                7: 'seven',
+                8: 'eight',
+                9: 'nine',
+                10: 'ten',
+                11: 'eleven',
+                12: 'twelve',
+                13: 'thirteen',
+                14: 'fourteen',
+                15: 'fifteen',
+                16: 'sixteen',
+                17: 'seventeen',
+                18: 'eighteen',
+                19: 'nineteen',
+            }
+            tens = {
+                20: 'twenty',
+                30: 'thirty',
+                40: 'forty',
+                50: 'fifty',
+                60: 'sixty',
+                70: 'seventy',
+                80: 'eighty',
+                90: 'ninety'
+            }
+            places = {
+                100: 'hundred',
+                1000: 'thousand'
+            }
+            # strategy is to divide the number from left to right and try to match it to a word
+            orig_num = num
+            word = ''
+
+            if num == 1000:
+                # since max out at 1000, we know it's definitely 1000
+                word += 'onethousand'
+                num -= 1000
+
+            if bool(num // 100):
+                hundreds = num // 100
+                word += words[hundreds] + 'hundred'
+                num -= hundreds * 100
+                if num:
+                    word += 'and'
+
+            if num >= 20:
+                keys = tens.keys()
+                while keys:
+                    ten = keys.pop()
+                    if num // ten == 1 and num % ten < 10:
+                        word += tens[ten]
+                        num -= ten
+                        break
+                if num:
+                    word += words[num]
+            else:
+                if num:
+                    word += words[num]
+
+            return word
+
+        nums = range(1, 1001)
+        worded_nums = dict((n, number_to_word(n)) for n in nums)
+        wrd = ''.join(worded_nums.values())
+        print worded_nums
+
+        print len(''.join([x[1] for x in worded_nums.items() if x[0] < 10]))
+        print len(''.join([x[1] for x in worded_nums.items() if x[0] >= 10 and x[0] < 20]))
+        print len(''.join([x[1] for x in worded_nums.items() if x[0] >= 20 and x[0] < 100]))
+        print len(''.join([x[1] for x in worded_nums.items() if x[0] >= 100 and x[0] < 1000]))
+
+        self.answer = len(wrd)
+
+# Solution17().run()
