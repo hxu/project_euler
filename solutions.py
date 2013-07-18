@@ -489,3 +489,85 @@ class Solution17(Solution):
         self.answer = len(wrd)
 
 # Solution17().run()
+
+class Solution18(Solution):
+    triangle = \
+        """75
+            95 64
+            17 47 82
+            18 35 87 10
+            20 04 82 47 65
+            19 01 23 75 03 34
+            88 02 77 73 07 63 67
+            99 65 04 28 06 16 70 92
+            41 41 26 56 83 40 80 70 33
+            41 48 72 33 47 32 37 16 94 29
+            53 71 44 65 25 43 91 52 97 51 14
+            70 11 33 28 77 73 17 78 39 68 17 57
+            91 71 52 38 17 14 91 43 58 50 27 29 48
+            63 66 04 68 89 53 67 30 73 16 69 87 40 31
+            04 62 98 27 23 09 70 98 73 93 38 53 60 04 23"""
+
+    def solve_from_top(self):
+        rows = [[int(y) for y in x.strip().split(" ")] for x in self.triangle.split("\n")]
+        num_rows = len(rows)
+        maximum = 0
+        paths = {}  # keys are strings of indices at each level
+        for lev in range(0, num_rows):
+            print "now on row {}".format(lev)
+            row = rows[lev]
+            if lev == 0:
+                # special case of first row
+                paths["0"] = row[0]
+                maximum = row[0]
+            else:
+                for x in range(0, len(row)):
+                    priors = []
+                    for y in paths.keys():
+                        path = y.split(",")
+                        if len(path) == lev:
+                            if y[-1] in [str(x), str(x-1)]:
+                                priors.append(y)
+                    for y in priors:
+                        new_path = y + ",{}".format(x)
+                        new_sum = paths[y] + row[x]
+                        paths[new_path] = new_sum
+                        if new_sum > maximum:
+                            maximum = new_sum
+                            print "new max {}".format(maximum)
+        self.answer = maximum
+
+    def solve(self):
+        # More efficient methodology going from the bottom up
+        sums = []
+        rows = [[int(y) for y in x.strip().split(" ")] for x in self.triangle.split("\n")]
+        rows.reverse()
+        for r in rows:
+            if len(sums) == 0:
+                sums.append(r)
+            else:
+                last_row = sums[-1]
+                new_row = []
+                for i, x in enumerate(r):
+                    new_row.append(max(x + last_row[i], x + last_row[i+1]))
+                sums.append(new_row)
+                self.answer = max(new_row)
+
+# Solution18().run()
+
+class Solution19(Solution):
+    def solve(self):
+        from datetime import date, timedelta
+        last_date = date(2000, 12, 31)
+        first_sunday = date(1901, 1, 6)
+        week = timedelta(7)
+        curr_date = first_sunday
+        cnt = 0
+        while curr_date <= last_date:
+            if curr_date.day == 1:
+                cnt += 1
+            curr_date += week
+
+        self.answer = cnt
+
+# Solution19().run()
