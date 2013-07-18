@@ -579,4 +579,31 @@ class Solution20(Solution):
         digits = [int(x) for x in list(str(fac))]
         self.answer = sum(digits)
 
-Solution20().run()
+# Solution20().run()
+
+class Solution21(Solution):
+    def solve(self):
+        amicable_numbers = []
+        nums = range(1, 10001)
+        while nums:
+            x = nums.pop(0)
+            sum_of_div = self.sum_of_factors(x)
+            if self.sum_of_factors(sum_of_div) == x and sum_of_div != x:
+                amicable_numbers.extend([sum_of_div, x])
+
+        print amicable_numbers
+        print set(amicable_numbers)
+        self.answer = sum(set(amicable_numbers))
+
+    def sum_of_factors(self, n):
+        # Returns sum of factors of n
+        # from solution 12, but excluding the number itself
+        factors = [1]
+        x = 2
+        while x < ((n ** 0.5) + 1):
+            if n % x == 0:
+                factors.extend([x, n / x])
+            x += 1
+        return sum(factors)
+
+Solution21().run()
