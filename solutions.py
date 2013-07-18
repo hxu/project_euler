@@ -571,3 +571,12 @@ class Solution19(Solution):
         self.answer = cnt
 
 # Solution19().run()
+
+class Solution20(Solution):
+    def solve(self):
+        import math
+        fac = math.factorial(100)
+        digits = [int(x) for x in list(str(fac))]
+        self.answer = sum(digits)
+
+Solution20().run()
