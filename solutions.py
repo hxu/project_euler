@@ -606,4 +606,21 @@ class Solution21(Solution):
             x += 1
         return sum(factors)
 
-Solution21().run()
+# Solution21().run()
+
+class Solution22(Solution):
+    def solve(self):
+        import string
+        names_file = open('names.txt', 'r')
+        names = [x.strip('"') for x in names_file.read().split(",")]
+        names.sort()
+        letters = list(string.ascii_uppercase)
+        scores = []
+        for i, n in enumerate(names):
+            scores.append(sum([(letters.index(x) + 1) for x in n]) * (i + 1))
+            if n == "COLIN":
+                print i
+
+        self.answer = sum(scores)
+
+Solution22().run()
