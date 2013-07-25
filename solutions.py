@@ -623,4 +623,35 @@ class Solution22(Solution):
 
         self.answer = sum(scores)
 
-Solution22().run()
+# Solution22().run()
+
+class Solution23(Solution):
+    def solve(self):
+        upper_limit = 28123
+        numbers = range(1, upper_limit + 1)
+        res = []
+        for n in numbers:
+            for x in range(1, n):
+                first = self.sum_of_factors(x)
+                diff = n - x
+                second = self.sum_of_factors(diff)
+                if first > x and second > diff:
+                    print "{} is a sum of abundant numbers {} and {}".format(n, x, diff)
+                    res.append(n)
+                    break
+
+        self.answer = sum(set(res))
+
+    def sum_of_factors(self, n):
+        # Returns sum of factors of n
+        # from solution 12, but excluding the number itself
+        factors = [1]
+        x = 2
+        while x < ((n ** 0.5) + 1) and x != n:
+            if n % x == 0:
+                factors.extend([x, n / x])
+            x += 1
+        return sum(set(factors))
+
+
+Solution23().run()
