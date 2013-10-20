@@ -26,4 +26,20 @@ primesTo m = sieve [3,5..m] where
         | p*p > m = p : xs
         | otherwise = p : sieve (xs `minus` [p*p, p*p+2*p])
 
+isFactor :: Int -> Int -> Bool
 x `isFactor` y = y `mod` x == 0
+
+isPrime :: Int -> Bool
+isPrime x = not $ any divisible $ takeWhile notTooBig [2..]
+    where divisible y = x `mod` y == 0
+          notTooBig y = y * y <= x
+
+-- Don't understand how this works
+isPrime' n = n > 1 &&
+              foldr (\p r -> p*p > n || ((n `rem` p) /= 0 && r))
+                True primes
+
+primes = 2 : filter isPrime [3,5..]
+
+solution_3 = last $ filter isPrime $ filter (`isFactor` 600851475143) $ takeWhile notTooBig [2..]
+    where notTooBig y = y * y <= 600851475143
